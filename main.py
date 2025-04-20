@@ -2,8 +2,10 @@ import sys
 from PyQt6 import uic
 from PyQt6.QtWidgets import QApplication, QDialog
 import requests
-
+from const import api_key
 city = ''
+
+
 class PomForm(QDialog):
         def __init__(self):
             super().__init__()
@@ -12,6 +14,7 @@ class PomForm(QDialog):
                     data = file.readlines()
             self.label.setText(f"Хотите узнать погоду в городе {data[0]}?")
             self.pushButton.clicked.connect(self.run)
+
         def run(self):
             if self.radioButton.isChecked() == True:
                 self.close()
@@ -35,7 +38,7 @@ class PomForm(QDialog):
 class OneForm(QDialog):
     def __init__(self):
         super().__init__()
-        uic.loadUi('1.ui', self)
+        uic.loadUi('ui.1.ui', self)
         self.pushButton.clicked.connect(self.run)
 
     def run(self):
@@ -59,22 +62,22 @@ class OneForm(QDialog):
 class Erorr(QDialog):
     def __init__(self):
         super().__init__()
-        uic.loadUi('erorr.ui', self)
+        uic.loadUi('ui.erorr.ui', self)
     
 
 class Erorr2(QDialog):
     def __init__(self):
         super().__init__()
-        uic.loadUi('erorr2.ui', self)
+        uic.loadUi('ui.erorr2.ui', self)
 
                 
 class TreeForm(QDialog):
     def __init__(self):
         super().__init__()
-        uic.loadUi('3.ui', self)
+        uic.loadUi('ui.3.ui', self)
         self.pushButton.clicked.connect(self.run3)
         try:
-            a = "https://api.weatherstack.com/current?access_key=&query=" + city
+            a = f"https://api.weatherstack.com/current?access_key={api_key}&query=" + city
             response = requests.get(url=a)
             answer = response.json()
             self.label_2.setText(answer["request"]["query"])
@@ -89,7 +92,6 @@ class TreeForm(QDialog):
         except KeyError:
             self.second_form = Erorr()
             self.second_form.show()
-
 
     def run3(self):
         self.close()
